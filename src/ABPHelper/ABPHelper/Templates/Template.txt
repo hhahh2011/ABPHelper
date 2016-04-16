@@ -1,8 +1,31 @@
-﻿using Abp.Application.Services.Dto;
+using System;
+using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 
 namespace {0}.Dto
 {{
-	public class {1}{2} : I{2}Dto
-	{{
-	}}
+    [AutoMap(typeof({2}))]
+    public class {1}Dto : IDoubleWayDto
+    {{
+        
+
+    }}
+
+    public class {1}Input : IInputDto
+    {{
+        public {1}Dto {2} {{ get; set; }}
+    }}
+
+    public class {1}Output : IOutputDto
+    {{
+        public {1}Output({1}Dto {3})
+        {{
+            {2} = {3};
+        }}
+
+        public {1}Dto {2} {{ get; set; }}
+    }}
 }}
+
+
