@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -157,25 +157,28 @@ namespace ABPHelper.Helper
             }
 
             string nameSpace = GetNameSpace(document);
+            //System.Windows.MessageBox.Show(nameSpace);
+            string TypeName = nameSpace.Split('.').Last().TrimEnd('s');
+            //System.Windows.MessageBox.Show(TypeName);
+            string typeName = TypeName.Substring(0, 1).ToLower() + TypeName.Substring(1, TypeName.Length - 1);
+            //System.Windows.MessageBox.Show(typeName);
             string path = Path.GetTempPath();
             Directory.CreateDirectory(path);
-            foreach (var str in new[] {"Input", "Output"})
+            string content = string.Format(template, nameSpace, name, TypeName, typeName);
+            //System.Windows.MessageBox.Show(content);
+            string file = Path.Combine(path, name + "Dto.cs");
+            try
             {
-                string content = string.Format(template, nameSpace, name, str);
-                string file = Path.Combine(path, string.Format("{0}{1}.cs", name, str));
-                try
-                {
-                    File.WriteAllText(file, content);
-                    dtoFolder.ProjectItems.AddFromFileCopy(file);
-                }
-                catch (Exception e)
-                {
-                    MessageBox(e.Message, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                }
-                finally
-                {
-                    File.Delete(file);
-                }
+                File.WriteAllText(file, content);
+                dtoFolder.ProjectItems.AddFromFileCopy(file);
+            }
+            catch (Exception e)
+            {
+                MessageBox(e.Message, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            finally
+            {
+                File.Delete(file);
             }
         }
 
